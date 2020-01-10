@@ -4,12 +4,12 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick; 
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -86,6 +86,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    Joystick primary = new Joystick(0);
+    Joystick secondary = new Joystick(1);
+    private static final int lID = 0;
+    private static final int rID = 1;
+    Double[] driveVar = new Double[2];
+
+
+    public Double[] getDrive(){
+      driveVar[0] = primary.getRawAxis(lID);
+      
+      return driveVar;
+    }
+
   }
 
   /**
@@ -93,5 +106,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    
+    Joystick joystick1 = new Joystick(0);
+    SmartDashboard.putNumber("Joystick X value", joystick1.getX());
+
+
   }
 }
