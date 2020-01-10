@@ -132,6 +132,7 @@ public class Robot extends TimedRobot {
 
     MC.setLime(IM.getLime(), x, y, v, area);
     MC.setLimeTrack(x, y, v, area);
+    MC.setPositionControl();
 
   }
 
