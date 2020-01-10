@@ -8,8 +8,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick; 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +28,22 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  MotorController MC = new MotorController();
+  InputManager IM = new InputManager();
+
+  // ------------------------- START LIMELIGHT CODE ------------------------------- //
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("Limelight");
+  NetworkTableEntry camMode;  //Sets the limelight's operation mode
+  //Operation modes: 0 = Vision processor.  1 = Driver camera (increases exposure, disables vision processing).
+  
+  NetworkTableEntry pipeline; //What camera calibration settings we are on
+  NetworkTableEntry tx; //Horizontal offset from crosshair to target (-27 to 27 degrees)
+  NetworkTableEntry ty; //Vertical offset from crosshair to target (-20.5 to 20.5 degrees)
+  NetworkTableEntry ta; //The rectangular area of the vision target
+  NetworkTableEntry tv; //Whether the limelight has sany valid targets (0 or 1)
+  NetworkTableEntry da; //Target area (0% of image to 100% of image
+  int cM = 1, pL = 0; //Default values for the camMode and pipeline
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -33,6 +53,18 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+
+    camMode = table.getEntry("camMode");
+    pipeline = table.getEntry("pipeline");
+    tx = table.getEntry("tx");
+    ty = table.getEntry("ty");
+    tv = table.getEntry("tv");
+    ta = table.getEntry("ta");
+
+    camMode.setFlags(cM);
+    pipeline.setNumber(pL);
+
   }
 
   /**
@@ -86,18 +118,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    Joystick primary = new Joystick(0);
-    Joystick secondary = new Joystick(1);
-    private static final int lID = 0;
-    private static final int rID = 1;
-    Double[] driveVar = new Double[2];
+    
+    // -------------------- START LIMELIGHT CODE ------------------- //
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double v = tv.getDouble(0.0);
+    double area = ta.getDouble(0.0);
 
+    SmartDashboard.putNumber("L X", x);
+    SmartDashboard.putNumber("L Y", y);
+    SmartDashboard.putNumber("L AREA", area);
+    SmartDashboard.putNumber("L Pipeline", (double) pipeline.getNumber(pL));
+    SmartDashboard.putNumber("Vision Target?", v);
 
-    public Double[] getDrive(){
-      driveVar[0] = primary.getRawAxis(lID);
-      
-      return driveVar;
-    }
+    MC.setLime(IM.getLime(), x, y, v, area);
+    MC.setLimeTrack(x, y, v, area);
 
   }
 
