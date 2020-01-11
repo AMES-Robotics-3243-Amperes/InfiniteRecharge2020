@@ -34,17 +34,27 @@ public class MotorController {
     private static final int LBID = 2;
     private static final int RTID = 3;
     private static final int RBID = 4;
+    private static final int grapplerID = 5;
+    private static final int rotateID = 6;
+
     private CANSparkMax leftT = new CANSparkMax(LTID, MotorType.kBrushless);
     private CANSparkMax leftB = new CANSparkMax(LBID, MotorType.kBrushless);
     private CANSparkMax rightT = new CANSparkMax(RTID, MotorType.kBrushless);
     private CANSparkMax rightB = new CANSparkMax(RBID, MotorType.kBrushless);
 
-    private CANSparkMax grappler = new CANSparkMax(5, MotorType.kBrushless);
-    PIDMotor grapplerPID = new PIDMotor(grappler, "Grappler"); // default PID parameters
-
     SpeedControllerGroup m_left = new SpeedControllerGroup(leftT, leftB);
     SpeedControllerGroup m_right = new SpeedControllerGroup(rightT, rightB);
     DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
+    
+    private CANSparkMax grappler = new CANSparkMax(grapplerID, MotorType.kBrushless);
+    PIDMotor grapplerPID = new PIDMotor(grappler, "Grappler"); // default PID parameters
+    
+    private CANSparkMax rotateCP = new CANSparkMax(rotateID, MotorType.kBrushless);
+    private CANEncoder m_encoderCP = rotateCP.getEncoder();
+
+    //NOT YET TUNED TO CORRECT ROTATION VALUES
+    private static final double ROTATE_MIN = 9.5;
+    private static final double ROTATE_MAX = 12.5;
 
     double limeDrive = 0.0d;
     double limeSteer = 0.0d;
@@ -60,6 +70,7 @@ public class MotorController {
     private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
+        // --------------------------- LIMELIGHT CODE --------------------------------- //
     public void setLime(boolean starter, double x, double y, double v, double area){
         m_left.setInverted(true);   //Test to see which side is inverted first!!
 
@@ -123,8 +134,9 @@ public class MotorController {
         grappler.getEncoder().setPosition(extended ?GRAPPLER_EXTEND_MAX :GRAPPLER_EXTEND_MIN);
 
     }
-    
-    public void setPositionControl(){
+
+        // ----------------------- CONTROL PANEL: POSITION CONTROL -------------------------- //
+    public void setPositionControl(Boolean[] colors){
         m_colorMatcher.addColorMatch(kBlueTarget);
         m_colorMatcher.addColorMatch(kGreenTarget);
         m_colorMatcher.addColorMatch(kRedTarget);
@@ -151,6 +163,24 @@ public class MotorController {
         SmartDashboard.putNumber("Blue", detectedColor.blue);
         SmartDashboard.putNumber("Confidence", match.confidence);
         SmartDashboard.putString("Detected Color", colorString);
+
         
+    }
+
+    public void setRotationControl(boolean rotate){
+        
+        if(rotate){
+            if(0 < m_encoderCP.getPosition() && m_encoderCP.getPosition() < ROTATE_MIN){
+                rotateCP.set(0.50);
+            } else if(m_encoderCP.getPosition() > ROTATE_MAX){
+                rotateCP.set(-.50);
+            } else if(m_encoderCP.getPosition() < ROTATE_MAX && m_encoderCP.getPosition() > ROTATE_MIN){
+                rotateCP.stopMotor();
+            }
+        } else{
+            rotateCP.stopMotor();
+            m_encoderCP.setPosition(0);
+        }
+
     }
 }

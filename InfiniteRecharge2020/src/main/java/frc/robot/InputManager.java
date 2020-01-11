@@ -24,7 +24,8 @@ public class InputManager {
     Boolean lime = false;
     Double[] driveVar = new Double[2];
     
-    double varCP = 0.0;
+    Boolean[] positionCP = new Boolean[4];
+    boolean rotationCP = false;
 
     Joystick primary = new Joystick(0);
     Joystick secondary = new Joystick(1);
@@ -52,9 +53,19 @@ public class InputManager {
     {
         return grapplerExtended;
     }
-    public double getControlPanel(){
+    public Boolean[] getPositionControl(){
 
-        return varCP;
+        positionCP[0] = secondary.getRawButton(1);  //Blue
+        positionCP[1] = secondary.getRawButton(2);  //Green
+        positionCP[2] = secondary.getRawButton(3);  //Red
+        positionCP[3] = secondary.getRawButton(4);  //Yellow
+
+        return positionCP;
+    }
+
+    public boolean getRotationControl()
+    {
+        return rotationCP = secondary.getRawButtonPressed(5);  //Left bumper
     }
 
 }

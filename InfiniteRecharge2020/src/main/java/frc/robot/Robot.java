@@ -31,10 +31,10 @@ public class Robot extends TimedRobot {
   MotorController MC = new MotorController();
   InputManager IM = new InputManager();
 
-  // ------------------------- START LIMELIGHT CODE ------------------------------- //
+  // ------------------------- START LIMELIGHT CODE ------------------------------- 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("Limelight");
   NetworkTableEntry camMode;  //Sets the limelight's operation mode
-  //Operation modes: 0 = Vision processor.  1 = Driver camera (increases exposure, disables vision processing).
+    //Operation modes: 0 = Vision processor.  1 = Driver camera (increases exposure, disables vision processing).
   
   NetworkTableEntry pipeline; //What camera calibration settings we are on
   NetworkTableEntry tx; //Horizontal offset from crosshair to target (-27 to 27 degrees)
@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     IM.update();
     
-    // -------------------- START LIMELIGHT CODE ------------------- //
+    // -------------------- START LIMELIGHT CODE ------------------- 
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
     double v = tv.getDouble(0.0);
@@ -134,7 +134,10 @@ public class Robot extends TimedRobot {
 
     MC.setLime(IM.getLime(), x, y, v, area);
     MC.setLimeTrack(x, y, v, area);
-    MC.setPositionControl();
+
+    // ----------------------------- TRENCH ------------------------------ 
+    MC.setPositionControl(IM.getPositionControl());
+    MC.setRotationControl(IM.getRotationControl());
 
     // CLIMBING --------------------------------------------------------
     MC.setGrapplerExtended(IM.getGrapplerExtended());
