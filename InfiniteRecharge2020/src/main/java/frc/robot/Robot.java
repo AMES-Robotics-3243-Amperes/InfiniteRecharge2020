@@ -4,13 +4,13 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick; 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -119,7 +119,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     IM.update();
-
+    
     // -------------------- START LIMELIGHT CODE ------------------- //
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
@@ -134,6 +134,7 @@ public class Robot extends TimedRobot {
 
     MC.setLime(IM.getLime(), x, y, v, area);
     MC.setLimeTrack(x, y, v, area);
+    MC.setPositionControl();
 
     // CLIMBING --------------------------------------------------------
     MC.setGrapplerExtended(IM.getGrapplerExtended());
@@ -144,5 +145,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    
+    Joystick joystick1 = new Joystick(0);
+    SmartDashboard.putNumber("Joystick X value", joystick1.getX());
+
+
   }
 }

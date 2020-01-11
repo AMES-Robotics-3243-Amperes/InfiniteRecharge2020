@@ -1,7 +1,9 @@
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
 
 /**
  * A container class for SPARK MAX closed-loop PID parameters
