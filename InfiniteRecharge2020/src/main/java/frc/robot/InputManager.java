@@ -13,16 +13,30 @@ import edu.wpi.first.wpilibj.Joystick;
  * Add your docs here.
  */
 public class InputManager {
+    private static final int B_LIME = 0; // 1
+    private static final int B_GRAPPLER = 7; // 8
+
+    boolean grapplerExtended = false;
     Boolean lime = false;
 
     Joystick primary = new Joystick(0);
     Joystick secondary = new Joystick(1);
 
+    /** Call this once each teleopPeriodic. */
+    public void update(){
+        if(primary.getRawButtonPressed(B_GRAPPLER))
+            grapplerExtended = !grapplerExtended;
+    }
+
     public boolean getLime(){
-        if(primary.getRawButtonPressed(0)){
+        if(primary.getRawButtonPressed(B_LIME)){
             lime = !lime;
         }
         return lime;   
     }
 
+    public boolean getGrapplerExtended()
+    {
+        return grapplerExtended;
+    }
 }

@@ -118,6 +118,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    IM.update();
+
     // -------------------- START LIMELIGHT CODE ------------------- //
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
@@ -133,6 +135,8 @@ public class Robot extends TimedRobot {
     MC.setLime(IM.getLime(), x, y, v, area);
     MC.setLimeTrack(x, y, v, area);
 
+    // CLIMBING --------------------------------------------------------
+    MC.setGrapplerExtended(IM.getGrapplerExtended());
   }
 
   /**

@@ -20,7 +20,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
  * Add your docs here.
  */
 public class MotorController {
+    private static final double GRAPPLER_EXTEND_MIN = 0;
+    private static final double GRAPPLER_EXTEND_MAX = 10;
     //Testing out limelight code, the below driving code can be deleted. - Maili 1/9/20
+    // Re: Not all this code is for driving. Be careful about deleting. - Silas 2020 Jan 10
     private static final int LTID = 1;
     private static final int LBID = 2;
     private static final int RTID = 3;
@@ -29,6 +32,9 @@ public class MotorController {
     private CANSparkMax leftB = new CANSparkMax(LBID, MotorType.kBrushless);
     private CANSparkMax rightT = new CANSparkMax(RTID, MotorType.kBrushless);
     private CANSparkMax rightB = new CANSparkMax(RBID, MotorType.kBrushless);
+
+    private CANSparkMax grappler = new CANSparkMax(5, MotorType.kBrushless);
+    PIDMotor grapplerPID = new PIDMotor(grappler, "Grappler"); // default PID parameters
 
     SpeedControllerGroup m_left = new SpeedControllerGroup(leftT, leftB);
     SpeedControllerGroup m_right = new SpeedControllerGroup(rightT, rightB);
@@ -87,5 +93,11 @@ public class MotorController {
             drive_cmd = MAX_DRIVE;
         }
         limeDrive = drive_cmd;
+    }
+
+    // CLIMBING --------------------------------------------------------------------------------------------------
+    public void setGrapplerExtended(boolean extended)
+    {
+        grappler.getEncoder().setPosition(extended ?GRAPPLER_EXTEND_MAX :GRAPPLER_EXTEND_MIN);
     }
 }
