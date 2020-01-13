@@ -29,6 +29,7 @@ public class InputManager {
     public Double[] getDrive(){
         driveVar[0] = primary.getRawAxis(lID);    //Test to see if driveVar[0] should be lID
         driveVar[1] = primary.getRawAxis(rID);    //Test to see if driveVar[1] should be rID
+        SmartDashboard.putNumber("Joystick X axis", driveVar[0]);
         return driveVar;
     }
 
