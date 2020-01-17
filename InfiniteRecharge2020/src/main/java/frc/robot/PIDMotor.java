@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkMax;
 public class PIDMotor
 {
 	private CANSparkMax motor;
-	private CANPIDController pidController;
+	public final CANPIDController pidController;
 	private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM; // PID coefficients
 	private String name;
 
