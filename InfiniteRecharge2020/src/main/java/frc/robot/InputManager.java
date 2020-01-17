@@ -9,6 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
+
 
 /**
  * Add your docs here.
@@ -16,6 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class InputManager {
     private static final int B_LIME = 0; // 1
     private static final int B_GRAPPLER = 7; // 8
+
+    private static final int B_COLOR_SELECT = -1;
+    private static final int B_COL_RED = 1;
+    private static final int B_COL_GREEN = 2;
+    private static final int B_COL_BLUE = 3;
+    private static final int B_COL_YELLOW = 4;
 
     boolean grapplerExtended = false;
     private static final int lID = 0;
