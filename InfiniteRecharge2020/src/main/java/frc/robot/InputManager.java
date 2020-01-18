@@ -20,10 +20,17 @@ public class InputManager {
     private static final int B_GRAPPLER = 7; // 8
 
     private static final int B_COLOR_SELECT = -1;
+<<<<<<< HEAD
     private static final int B_COL_RED = 1;
     private static final int B_COL_GREEN = 2;
     private static final int B_COL_BLUE = 3;
     private static final int B_COL_YELLOW = 4;
+=======
+    private static final int B_COL_RED = ;
+    private static final int B_COL_GREEN = ;
+    private static final int B_COL_BLUE = ;
+    private static final int B_COL_YELLOW = ;
+>>>>>>> e64e04508da7e4f9ee97d25ddf734a201c899e30
 
     boolean grapplerExtended = false;
     private static final int lID = 0;
@@ -62,7 +69,7 @@ public class InputManager {
     {
         return grapplerExtended;
     }
-    public Boolean[] getPositionControl(){
+    public Boolean[] getControlPanelPos(){
 
         positionCP[0] = secondary.getRawButton(1);  //Blue
         positionCP[1] = secondary.getRawButton(2);  //Green
@@ -72,7 +79,7 @@ public class InputManager {
         return positionCP;
     }
 
-    public boolean getRotationControl()
+    public boolean getControlPnaleRot()
     {
         return rotationCP = secondary.getRawButtonPressed(5);  //Left bumper
     }

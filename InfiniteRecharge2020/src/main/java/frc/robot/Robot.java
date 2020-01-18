@@ -143,8 +143,8 @@ public class Robot extends TimedRobot {
     MC.setLimeTrack(x, y, v, area);
 
     // ----------------------------- TRENCH ------------------------------ 
-    MC.setPositionControl(IM.getPositionControl());
-    MC.setRotationControl(IM.getRotationControl());
+    MC.setControlPanelPos(IM.getControlPanelPos());
+    MC.setControlPanelRot(IM.getControlPnaleRot());
 
     // CLIMBING --------------------------------------------------------
     MC.setGrapplerExtended(IM.getGrapplerExtended());
