@@ -34,8 +34,9 @@ public class MotorController {
     private static final int LBID = 2;
     private static final int RTID = 3;
     private static final int RBID = 4;
-    private static final int grapplerID = 5;
+    private static final int grapplerID = 0;
     private static final int rotateID = 6;
+    private static final int shooterFlywheelID = 7;
 
     private CANSparkMax leftT = new CANSparkMax(LTID, MotorType.kBrushless);
     private CANSparkMax leftB = new CANSparkMax(LBID, MotorType.kBrushless);
@@ -46,8 +47,10 @@ public class MotorController {
     SpeedControllerGroup m_right = new SpeedControllerGroup(rightT, rightB);
     DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
     
+    private CANSparkMax shooterFlywheel = new CANSparkMax(shooterFlywheelID, MotorType.kBrushless);
+    private PIDMotor shooterFlywheelPID = new PIDMotor(shooterFlywheel);
+
     private CANSparkMax grappler = new CANSparkMax(grapplerID, MotorType.kBrushless);
-    PIDMotor grapplerPID = new PIDMotor(grappler, "Grappler"); // default PID parameters
     
     private CANSparkMax rotateCP = new CANSparkMax(rotateID, MotorType.kBrushless);
     private CANEncoder m_encoderCP = rotateCP.getEncoder();
@@ -128,11 +131,16 @@ public class MotorController {
         limeDrive = drive_cmd;
     }
 
+    // SHOOTING ---------------------------------------------------------------------------------------
+    public void setShooterFlywheelSpeed(double speed)
+    {
+        shooterFlywheelPID.pidController.setReference(speed, ControlType.kVelocity);
+    }
+
     // CLIMBING --------------------------------------------------------------------------------------------------
     public void setGrapplerExtended(boolean extended)
     {
         grappler.getEncoder().setPosition(extended ?GRAPPLER_EXTEND_MAX :GRAPPLER_EXTEND_MIN);
-
     }
 
         // ----------------------- CONTROL PANEL: POSITION CONTROL -------------------------- //

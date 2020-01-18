@@ -9,6 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
+
 
 /**
  * Add your docs here.
@@ -16,6 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class InputManager {
     private static final int B_LIME = 0; // 1
     private static final int B_GRAPPLER = 7; // 8
+
+    private static final int B_COLOR_SELECT = -1;
+    private static final int B_COL_RED = ;
+    private static final int B_COL_GREEN = ;
+    private static final int B_COL_BLUE = ;
+    private static final int B_COL_YELLOW = ;
 
     boolean grapplerExtended = false;
     private static final int lID = 0;
@@ -39,6 +47,7 @@ public class InputManager {
     public Double[] getDrive(){
         driveVar[0] = primary.getRawAxis(lID);    //Test to see if driveVar[0] should be lID
         driveVar[1] = primary.getRawAxis(rID);    //Test to see if driveVar[1] should be rID
+        SmartDashboard.putNumber("Joystick X axis", driveVar[0]);
         return driveVar;
     }
 

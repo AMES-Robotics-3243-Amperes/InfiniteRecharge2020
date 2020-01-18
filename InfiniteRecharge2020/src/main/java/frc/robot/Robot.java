@@ -149,9 +149,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     
-    Joystick joystick1 = new Joystick(0);
-    SmartDashboard.putNumber("Joystick X value", joystick1.getX());
-
+    
 
   }
 }
