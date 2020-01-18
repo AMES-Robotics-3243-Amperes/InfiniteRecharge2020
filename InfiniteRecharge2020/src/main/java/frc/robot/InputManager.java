@@ -53,7 +53,7 @@ public class InputManager {
     {
         return grapplerExtended;
     }
-    public Boolean[] getPositionControl(){
+    public Boolean[] getControlPanelPos(){
 
         positionCP[0] = secondary.getRawButton(1);  //Blue
         positionCP[1] = secondary.getRawButton(2);  //Green
@@ -63,7 +63,7 @@ public class InputManager {
         return positionCP;
     }
 
-    public boolean getRotationControl()
+    public boolean getControlPnaleRot()
     {
         return rotationCP = secondary.getRawButtonPressed(5);  //Left bumper
     }

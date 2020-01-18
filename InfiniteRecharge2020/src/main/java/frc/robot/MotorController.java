@@ -136,7 +136,7 @@ public class MotorController {
     }
 
         // ----------------------- CONTROL PANEL: POSITION CONTROL -------------------------- //
-    public void setPositionControl(Boolean[] colors){
+    public void setControlPanelPos(Boolean[] colors){
         m_colorMatcher.addColorMatch(kBlueTarget);
         m_colorMatcher.addColorMatch(kGreenTarget);
         m_colorMatcher.addColorMatch(kRedTarget);
@@ -167,7 +167,7 @@ public class MotorController {
         
     }
 
-    public void setRotationControl(boolean rotate){
+    public void setControlPanelRot(boolean rotate){
         
         if(rotate){
             if(0 < m_encoderCP.getPosition() && m_encoderCP.getPosition() < ROTATE_MIN){
