@@ -20,10 +20,10 @@ public class InputManager {
     private static final int B_GRAPPLER = 7; // 8
 
     private static final int B_COLOR_SELECT = -1;
-    private static final int B_COL_RED = ;
-    private static final int B_COL_GREEN = ;
-    private static final int B_COL_BLUE = ;
-    private static final int B_COL_YELLOW = ;
+    private static final int B_COL_RED = 2;
+    private static final int B_COL_GREEN = 1;
+    private static final int B_COL_BLUE = 0;
+    private static final int B_COL_YELLOW = 3;
 
     boolean grapplerExtended = false;
     private static final int lID = 0;
@@ -31,9 +31,6 @@ public class InputManager {
     
     Boolean lime = false;
     Double[] driveVar = new Double[2];
-    
-    Boolean[] positionCP = new Boolean[4];
-    boolean rotationCP = false;
 
     Joystick primary = new Joystick(0);
     Joystick secondary = new Joystick(1);
@@ -63,18 +60,19 @@ public class InputManager {
         return grapplerExtended;
     }
     public Boolean[] getControlPanelPos(){
+        Boolean[] positionCP = new Boolean[4];
 
-        positionCP[0] = secondary.getRawButton(1);  //Blue
-        positionCP[1] = secondary.getRawButton(2);  //Green
-        positionCP[2] = secondary.getRawButton(3);  //Red
-        positionCP[3] = secondary.getRawButton(4);  //Yellow
+        positionCP[0] = secondary.getRawButton(B_COL_BLUE);  //Blue
+        positionCP[1] = secondary.getRawButton(B_COL_GREEN);  //Green
+        positionCP[2] = secondary.getRawButton(B_COL_RED);  //Red
+        positionCP[3] = secondary.getRawButton(B_COL_YELLOW);  //Yellow
 
         return positionCP;
     }
 
-    public boolean getControlPnaleRot()
+    public boolean getControlPanelRot()
     {
-        return rotationCP = secondary.getRawButtonPressed(5);  //Left bumper
+        return secondary.getRawButtonPressed(5);  //Left bumper
     }
 
 }

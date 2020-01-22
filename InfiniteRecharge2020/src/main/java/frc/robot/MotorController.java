@@ -34,7 +34,8 @@ public class MotorController {
     private static final int LBID = 2;
     private static final int RTID = 3;
     private static final int RBID = 4;
-    private static final int grapplerID = 0;
+    private static final int grapplerID = 9;
+    private static final int grappleCrawlerID = 8;
     private static final int rotateID = 6;
     private static final int shooterFlywheelID = 7;
 
@@ -50,7 +51,11 @@ public class MotorController {
     private CANSparkMax shooterFlywheel = new CANSparkMax(shooterFlywheelID, MotorType.kBrushless);
     private PIDMotor shooterFlywheelPID = new PIDMotor(shooterFlywheel);
 
-    private CANSparkMax grappler = new CANSparkMax(grapplerID, MotorType.kBrushless);
+    private CANSparkMax grappler;
+    private PIDMotor grapplerPID;
+    private CANSparkMax grappleCrawler = new CANSparkMax(grappleCrawlerID, MotorType.kBrushless);
+    private boolean flag_hasGrapplerExtended = false; // This becomes true the first time the grappler is extended
+    private boolean flag_grappleCrawlMode; // This becomes true the first time the grappler is retracted
     
     private CANSparkMax rotateCP = new CANSparkMax(rotateID, MotorType.kBrushless);
     private CANEncoder m_encoderCP = rotateCP.getEncoder();
@@ -72,6 +77,14 @@ public class MotorController {
     private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+    public MotorController()
+    {
+        // THIS **MUST** BE DONE IN THE CONSTRUCTOR (which MUST be called in robotInit) FOR CLOSED LOOD MOTOR CTONROL TO WORK!! - Silas 2020 Jan 21
+        grappler = new CANSparkMax(grapplerID, MotorType.kBrushless);
+        grappler.restoreFactoryDefaults();
+        grapplerPID = new PIDMotor(grappler);
+    }
 
         // --------------------------- LIMELIGHT CODE --------------------------------- //
     public void setLime(boolean starter, double x, double y, double v, double area){
@@ -140,7 +153,22 @@ public class MotorController {
     // CLIMBING --------------------------------------------------------------------------------------------------
     public void setGrapplerExtended(boolean extended)
     {
-        grappler.getEncoder().setPosition(extended ?GRAPPLER_EXTEND_MAX :GRAPPLER_EXTEND_MIN);
+        //grappler.set(extended ?0.1 :0);
+        //grapplerPID.pidController.setReference(1, ControlType.kVelocity);
+        grapplerPID.pidController.setReference(10, ControlType.kPosition);
+/*
+        grapplerPID.pidController.setReference(extended ?GRAPPLER_EXTEND_MAX :GRAPPLER_EXTEND_MIN, ControlType.kPosition);
+        //grappler.getEncoder().setPosition(extended ?GRAPPLER_EXTEND_MAX :GRAPPLER_EXTEND_MIN);
+        
+        flag_hasGrapplerExtended |= extended;
+        if(flag_hasGrapplerExtended && !extended)
+            flag_grappleCrawlMode = true;
+    */  }
+
+    public void setGrappleCrawl(double speed)
+    {
+        // If the grappler hasn't been extended and then retracted yet, don't try to crawl along the rail
+        grappleCrawler.set(flag_grappleCrawlMode ?speed :0);
     }
 
         // ----------------------- CONTROL PANEL: POSITION CONTROL -------------------------- //

@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 
@@ -12,7 +13,9 @@ public class PIDMotor
 {
 	private CANSparkMax motor;
 	public final CANPIDController pidController;
-	private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM; // PID coefficients
+	public final CANEncoder encoder;
+	private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput; // PID coefficients
+	//private double maxRPM;
 	private String name;
 
 	public PIDMotor(CANSparkMax motor)
@@ -35,14 +38,19 @@ public class PIDMotor
 		this.motor = motor;
 		this.name = name;
 		this.pidController = motor.getPIDController();
-		this.kP = kP; 
-        this.kI = kI;
-        this.kD = kD; 
-        this.kIz = kIz; 
-        this.kFF = kFF; 
-        this.kMaxOutput = kMaxOutput;
-        this.kMinOutput = -kMinOutput;
-        this.maxRPM = maxRPM;
+		setP(kP); 
+        setI(kI);
+        setD(kD); 
+        setIZone(kIz); 
+        setFF(kFF); 
+        setMaxOutput( kMaxOutput );
+		setMinOutput( kMinOutput );
+		//setOutputRange(kMinOutput, kMaxOutput);
+		
+		//this.maxRPM = maxRPM;
+
+		encoder = motor.getEncoder();
+		//pidController.setFeedbackDevice(encoder); // SPARK MAX Example code doesn't bother doing this. IS NEEDED? We'll see. - Silas 2020 Jan 21
 	}
 
 	public void setName(String name)

@@ -28,8 +28,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  MotorController MC = new MotorController();
-  InputManager IM = new InputManager();
+  MotorController MC;
+  InputManager IM;
 
   // ------------------------- START LIMELIGHT CODE ------------------------------- 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("Limelight");
@@ -50,6 +50,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // MotorController **MUST** BE INITIALIZED IN robotInit() FOR CLOSED LOOP MOTOR CONTROL TO WORK!! - Silas 2020 Jan 21
+    MC = new MotorController();
+    IM = new InputManager();
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -137,7 +141,7 @@ public class Robot extends TimedRobot {
 
     // ----------------------------- TRENCH ------------------------------ 
     MC.setControlPanelPos(IM.getControlPanelPos());
-    MC.setControlPanelRot(IM.getControlPnaleRot());
+    MC.setControlPanelRot(IM.getControlPanelRot());
 
     // CLIMBING --------------------------------------------------------
     MC.setGrapplerExtended(IM.getGrapplerExtended());
