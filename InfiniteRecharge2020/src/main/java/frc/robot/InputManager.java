@@ -20,7 +20,7 @@ public class InputManager {
     private static final int B_GRAPPLER = 7; // 8
 
     private static final int B_COLOR_SELECT = -1;
-    private static final int B_COL_RED = 2;
+    private static final int B_COL_RED = 2; // These button numbers are correct for all our controllers - Silas 2020 Jan 21
     private static final int B_COL_GREEN = 1;
     private static final int B_COL_BLUE = 0;
     private static final int B_COL_YELLOW = 3;
